@@ -77,3 +77,11 @@ jobs:
     - name: Verify emulator is running
       run: adb shell getprop init.svc.bootanim
 
+    - name: Archive build outputs
+      if: failure() # Only archive if the build fails
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-outputs
+        path: |
+          app/build/outputs/mapping/release/missing_rules.txt
+          app/build/intermediates/lint_intermediate_text_report/debug/lint-results-debug.txt
