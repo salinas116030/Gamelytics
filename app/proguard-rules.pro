@@ -41,3 +41,19 @@
 -keep class com.blongho.country_data.R$* {
     *;
 }
+
+# Preserve okhttp3 classes
+-keep class okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+# Preserve javax.annotation.Nullable
+-keep class javax.annotation.** { *; }
+-dontwarn javax.annotation.**
+
+# Preserve org.conscrypt classes
+-keep class org.conscrypt.** { *; }
+-dontwarn org.conscrypt.**
+
+# Preserve classes in Conscrypt
+-keep class java.security.Provider { *; }
+-dontwarn java.security.Provider
