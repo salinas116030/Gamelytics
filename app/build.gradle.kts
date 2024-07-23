@@ -43,7 +43,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
     implementation("com.squareup.picasso:picasso:2.71828")
-    implementation("androidx.exifinterface:exifinterface:1.3.3")
     implementation("com.github.blongho:worldCountryData:v1.5.3")
     implementation("androidx.annotation:annotation:1.6.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
