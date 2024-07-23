@@ -62,11 +62,21 @@ jobs:
     - name: Start the emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: ${{ env.API_LEVEL }}
+        api-level: 34
         target: default
         arch: x86_64
         profile: Nexus 6
         emulator-options: -no-window -no-audio -no-boot-anim
+        cores: 2
+        avd-name: test
+        force-avd-creation: true
+        emulator-boot-timeout: 600
+        emulator-port: 5554
+        disable-animations: true
+        disable-spellchecker: false
+        disable-linux-hw-accel: true
+        enable-hw-keyboard: false
+        channel: stable
 
     - name: Wait for emulator to boot
       run: adb wait-for-device
