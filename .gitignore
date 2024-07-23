@@ -48,7 +48,6 @@ proguard/
 *.class
 *.swo
 *.swp
-*.jar
 *.war
 *.ear
 
