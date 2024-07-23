@@ -13,13 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Ajusta la versión de Gradle si es necesario
       GRADLE_VERSION: 7.3.3
-      # SDK version
       ANDROID_SDK_VERSION: "34"
-      # SDK API level
       API_LEVEL: 34
-      # Build tools version
       BUILD_TOOLS_VERSION: "34.0.0"
 
     steps:
@@ -61,7 +57,7 @@ jobs:
       run: ./gradlew testDebugUnitTest
 
     - name: Start the emulator
-      uses: android-actions/emulator-runner@v2
+      uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: ${{ env.API_LEVEL }}
         target: default
