@@ -18,7 +18,7 @@ jobs:
     env:
       GRADLE_VERSION: 8.2
       ANDROID_SDK_VERSION: "34"
-      API_LEVEL: 34
+      API_LEVEL: 31
       BUILD_TOOLS_VERSION: "34.0.0"
 
     steps:
@@ -72,7 +72,7 @@ jobs:
       if: steps.avd-cache.outputs.cache-hit != 'true'
       uses: reactivecircus/android-emulator-runner@v2
       with:
-         api-level: 34
+         api-level: 31
          force-avd-creation: false
          arch: x86_64
          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -82,7 +82,7 @@ jobs:
     - name: Run the emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 34
+        api-level: 31
         target: default
         arch: x86_64
         profile: Nexus 6
