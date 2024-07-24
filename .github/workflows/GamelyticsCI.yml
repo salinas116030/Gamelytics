@@ -69,6 +69,7 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 34
+        target: default
         arch: x86_64
         profile: Nexus 6
         emulator-options: -no-window -no-audio -no-boot-anim
