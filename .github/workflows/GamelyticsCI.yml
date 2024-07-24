@@ -10,7 +10,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    strategy:
+     matrix:
+      api-level: [34]
 
     env:
       GRADLE_VERSION: 8.2
@@ -20,7 +23,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Install Gradle
       run: |
@@ -41,15 +44,6 @@ jobs:
         build-tools: ${{ env.BUILD_TOOLS_VERSION }}
         ndk: true
 
-    - name: Cache Gradle packages
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: gradle-${{ runner.os }}
-
     - name: Download dependencies
       run: gradle build --no-daemon
 
@@ -66,14 +60,13 @@ jobs:
         sudo udevadm trigger --name-match=kvm
 
     - name: AVD cache
-      uses: actions/cache@v4
+      uses: actions/cache@v3
       id: avd-cache
       with:
         path: |
           ~/.android/avd/*
           ~/.android/adb*
-        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: gradle-${{ runner.os }}
+        key: avd-${{ matrix.api-level }}
 
     - name: create AVD and generate snapshot for caching
       if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -84,7 +77,6 @@ jobs:
          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
          disable-animations: false
          script: echo "Generated AVD snapshot for caching."
-
 
     - name: Run the emulator
       uses: reactivecircus/android-emulator-runner@v2
