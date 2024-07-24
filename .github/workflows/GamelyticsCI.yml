@@ -74,10 +74,10 @@ jobs:
           ~/.android/adb*
         key: avd-34
 
-     - name: create AVD and generate snapshot for caching
-       if: steps.avd-cache.outputs.cache-hit != 'true'
-       uses: reactivecircus/android-emulator-runner@v2
-       with:
+    - name: create AVD and generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
          api-level: 34
          force-avd-creation: false
          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -95,7 +95,6 @@ jobs:
         emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot-save -gpu
         emulator-boot-timeout: 600
         force-avd-creation: false
-	disable-animations: true
         script: ./gradlew connectedCheck
 
     - name: Archive build outputs
