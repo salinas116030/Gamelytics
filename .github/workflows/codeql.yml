@@ -51,3 +51,11 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+
+    # Save the CodeQL analysis results as an artifact
+    - name: Upload CodeQL Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: codeql-results
+        path: .github/codeql/analyze/
