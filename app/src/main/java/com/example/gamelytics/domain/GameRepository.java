@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface GameRepository {
     Game get(int id);
-    List<Game> searchGames(String name);
+    List<Game> search(String name);
 }
