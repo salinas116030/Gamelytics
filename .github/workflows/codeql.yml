@@ -58,4 +58,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: codeql-results
-        path: .github/codeql/analyze/
+        path: /home/runner/work/_temp/codeql_databases/java.zip
