@@ -1,4 +1,4 @@
-package com.example.gamelytics.controllers;
+package com.example.gamelytics.infrastructure.internal.controllers;
 
 import com.example.gamelytics.application.CreateDeal;
 import com.example.gamelytics.domain.Deal;
