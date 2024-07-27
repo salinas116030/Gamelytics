@@ -1,18 +1,23 @@
 package com.example.gamelytics.domain;
 
 import androidx.annotation.NonNull;
-
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Game {
+public class Game implements Serializable {
 
     // Attributes
+    @SerializedName("gameID")
+    private int appID;
+    @SerializedName("external")
     private String title;
+    @SerializedName("thumb")
     private String logo;
     private String cheapestPriceHistory;
     private Map<String, Store> stores;
-    private int appID;
+
 
     // Constructor
     public Game() {
