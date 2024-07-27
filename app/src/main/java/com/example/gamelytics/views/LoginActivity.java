@@ -1,8 +1,10 @@
-package com.example.gamelytics;
+package com.example.gamelytics.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.gamelytics.R;
 
 public class LoginActivity extends AppCompatActivity {
 

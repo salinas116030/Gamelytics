@@ -1,4 +1,4 @@
-package com.example.gamelytics;
+package com.example.gamelytics.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +17,7 @@ import com.example.gamelytics.DataLayer.AndroidCustoms.CustomPriceAdapter;
 import com.example.gamelytics.DataLayer.Country;
 import com.example.gamelytics.DataLayer.FlowStates;
 import com.example.gamelytics.DataLayer.Game;
+import com.example.gamelytics.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

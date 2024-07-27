@@ -1,4 +1,4 @@
-package com.example.gamelytics;
+package com.example.gamelytics.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +18,7 @@ import com.example.gamelytics.BusinessLayer.MainApplication;
 import com.example.gamelytics.DataLayer.AndroidCustoms.CustomShopAdapter;
 import com.example.gamelytics.DataLayer.Game;
 import com.example.gamelytics.DataLayer.GiftCard;
+import com.example.gamelytics.R;
 
 import java.util.ArrayList;
 

@@ -13,6 +13,8 @@ import com.example.gamelytics.domain.Game;
 import com.example.gamelytics.domain.GameRepository;
 import com.example.gamelytics.infrastructure.ApiGameRepository;
 import com.example.gamelytics.infrastructure.internal.controllers.GameController;
+import com.example.gamelytics.views.GameDetailedActivity;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

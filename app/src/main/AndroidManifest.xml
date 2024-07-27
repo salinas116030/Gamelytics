@@ -18,13 +18,13 @@
         android:theme="@style/Theme.GameLytics"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
+            android:name=".views.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".PriceDetailedActivity"
+            android:name=".views.PriceDetailedActivity"
             android:exported="false" />
         <activity
-            android:name=".GameDetailedActivity"
+            android:name=".views.GameDetailedActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
