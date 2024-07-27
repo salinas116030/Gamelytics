@@ -1,95 +1,87 @@
 package com.example.gamelytics;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.AdapterView;
-
-import com.example.gamelytics.BusinessLayer.FetchResultListener;
-import com.example.gamelytics.BusinessLayer.MainApplication;
-import com.example.gamelytics.DataLayer.FlowStates;
-import com.example.gamelytics.DataLayer.Game;
-import java.util.HashSet;
-import java.util.Set;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.gamelytics.domain.Game;
+import com.example.gamelytics.domain.GameRepository;
+import com.example.gamelytics.infrastructure.ApiGameRepository;
+import com.example.gamelytics.infrastructure.internal.controllers.GameController;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    // App components
-    SearchView searchView;
-    ListView listView;
-    static ArrayAdapter<Game> adapter;
-    MainApplication applicationController;
-
+    private GameController gameController;
+    private SearchView searchView;
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+    private List<Game> gameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        searchView = (SearchView) findViewById(R.id.searchbar);
-        listView = (ListView) findViewById(R.id.listView);
-        applicationController = (MainApplication) getApplicationContext();
-        adapter = new ArrayAdapter<>(this, R.layout.row_layout, R.id.listText);
+        // Inicializa el controlador de juegos
+        GameRepository gameRepository = new ApiGameRepository();
+        gameController = new GameController(gameRepository);
 
+        searchView = findViewById(R.id.search_view);
+        listView = findViewById(R.id.list_view);
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(adapter);
 
-        // Query submitted
-        // TODO Still show up repeated games??
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.clear();
-                applicationController.getGameAppID(query, new FetchResultListener() {
-                    @Override
-                    public void onResultFetched(Game result) {
-                        if (result != null) adapter.add(result);
-                        else; // Suitable error handler
-                        Set<Game> reorderAdapter = new HashSet<>();
-                        for (int i = 0; i < adapter.getCount(); ++i) reorderAdapter.add(adapter.getItem(i));
-                        adapter.clear();
-                        adapter.addAll(reorderAdapter);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+                searchGames(query);
                 return true;
             }
 
             @Override
-            public boolean onQueryTextChange(String query) {
-/*                // Real time show-up
-                adapter.clear();
-                applicationController.getGameAppID(query, new FetchResultListener() {
-                    @Override
-                    public void onResultFetched(Game result) {
-                        if (result != null) adapter.add(result);
-                        else; // Suitable error handler
-                        Set<Game> reorderAdapter = new HashSet<>();
-                        for (int i = 0; i < adapter.getCount(); ++i) reorderAdapter.add(adapter.getItem(i));
-                        adapter.clear();
-                        adapter.addAll(reorderAdapter);
-                        adapter.notifyDataSetChanged();
-                    }
-                });*/
+            public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
 
-        // List item selected
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Game selGame = adapter.getItem(position);
-                Bundle bundle = new Bundle();
-                bundle.putInt("appid", selGame.getAppID());
+                Game selectedGame = gameList.get(position);
                 Intent intent = new Intent(MainActivity.this, GameDetailedActivity.class);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, FlowStates.SHOW_DISPLAYACTIVITY);
+                intent.putExtra("GAME_ID", selectedGame.getAppID());
+                startActivity(intent);
             }
         });
+    }
+
+    private void searchGames(String query) {
+        new Thread(() -> {
+            try {
+                List<Game> games = gameController.searchAllGames(query);
+                runOnUiThread(() -> {
+                    if (games != null && !games.isEmpty()) {
+                        gameList = games;
+                        adapter.clear();
+                        for (Game game : games) {
+                            adapter.add(game.getTitle());
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(MainActivity.this, "No games found", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Error searching games", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
     }
 }
