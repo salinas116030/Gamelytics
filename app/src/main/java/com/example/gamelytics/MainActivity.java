@@ -14,7 +14,9 @@ import com.example.gamelytics.domain.GameRepository;
 import com.example.gamelytics.infrastructure.ApiGameRepository;
 import com.example.gamelytics.infrastructure.internal.controllers.GameController;
 import com.example.gamelytics.views.GameDetailedActivity;
+import com.example.gamelytics.views.customs.ListItemGameAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private GameController gameController;
     private SearchView searchView;
     private ListView listView;
-    private ArrayAdapter<String> adapter;
-    private List<Game> gameList;
+    private ArrayAdapter<Game> adapter;
+    private List<Game> gameList ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +35,12 @@ public class MainActivity extends AppCompatActivity {
         // Inicializa el controlador de juegos
         GameRepository gameRepository = new ApiGameRepository();
         gameController = new GameController(gameRepository);
+        gameList = new ArrayList<>();
 
         searchView = findViewById(R.id.search_view);
         listView = findViewById(R.id.list_view);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        adapter = new ListItemGameAdapter(MainActivity.this, gameList);
         listView.setAdapter(adapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Game selectedGame = gameList.get(position);
+                Game selectedGame = adapter.getItem(position);
                 Intent intent = new Intent(MainActivity.this, GameDetailedActivity.class);
                 intent.putExtra("GAME_ID", selectedGame.getAppID());
                 startActivity(intent);
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         gameList = games;
                         adapter.clear();
                         for (Game game : games) {
-                            adapter.add(game.getTitle());
+                            adapter.add(game);
                         }
                         adapter.notifyDataSetChanged();
                     } else {
