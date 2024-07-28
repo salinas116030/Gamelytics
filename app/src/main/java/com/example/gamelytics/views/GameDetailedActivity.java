@@ -10,10 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gamelytics.R;
-import com.example.gamelytics.domain.GameItem;
+import com.example.gamelytics.domain.Game;
 import com.example.gamelytics.domain.GameRepository;
 import com.example.gamelytics.infrastructure.ApiGameRepository;
 import com.example.gamelytics.infrastructure.internal.controllers.GameController;
+import com.example.gamelytics.views.customs.ListItemDealAdapter;
+import com.squareup.picasso.Picasso;
 
 public class GameDetailedActivity extends AppCompatActivity {
 
@@ -22,7 +24,7 @@ public class GameDetailedActivity extends AppCompatActivity {
     private ImageView logo, pegi;
     private int gameid;
     ListView storeListView;
-    private GameItem game;
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +41,22 @@ public class GameDetailedActivity extends AppCompatActivity {
         pegi = (ImageView) findViewById(R.id.pegiImageView);
         storeListView = (ListView) findViewById(R.id.storeListView);
 
-        // Retrieve passed information from main screen
-
         Intent intent = getIntent();
         gameid = intent.getIntExtra("GAME_ID",-1);
         title.setText(String.valueOf(gameid));
-
-        /*
-        ArrayList<Country> arrayList = new ArrayList<Country>();
-        CustomPriceAdapter countryArrayAdapter = new CustomPriceAdapter(this, arrayList);
-        storeListView.setAdapter(countryArrayAdapter);
-        */
 
         new Thread(() -> {
             try {
                 game = gameController.getGame(gameid);
 
-                description.setText(game.getTitle());
+                runOnUiThread(() -> {
+                    title.setText(game.getInfo().getTitle());
+                    description.setText("Steam App ID: " + game.getInfo().getSteamAppID());
+                    Picasso.get().load(game.getInfo().getThumb()).into(logo);
+
+                    ListItemDealAdapter dealAdapter = new ListItemDealAdapter(this, game.getDeals());
+                    storeListView.setAdapter(dealAdapter);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 runOnUiThread(() -> Toast.makeText(GameDetailedActivity.this, "Error searching games", Toast.LENGTH_SHORT).show());

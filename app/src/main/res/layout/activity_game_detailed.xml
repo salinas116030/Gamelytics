@@ -15,75 +15,63 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.743"
+        app:layout_constraintHorizontal_bias="0.737"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.123" />
+        app:layout_constraintVertical_bias="0.121" />
 
     <ImageView
         android:id="@+id/logoImageView"
         android:layout_width="164dp"
         android:layout_height="117dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="231dp"
-        android:layout_marginBottom="577dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/descTextView"
+        app:layout_constraintEnd_toStartOf="@+id/titleTextView"
+        app:layout_constraintHorizontal_bias="0.402"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.518"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <ImageView
         android:id="@+id/pegiImageView"
-        android:layout_width="73dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="261dp"
-        android:layout_marginEnd="299dp"
-        android:layout_marginBottom="429dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="78dp"
+        android:layout_height="34dp"
+        app:layout_constraintBottom_toTopOf="@+id/storeListView"
+        app:layout_constraintStart_toStartOf="@+id/descTextView"
+        app:layout_constraintTop_toBottomOf="@+id/descTextView"
+        app:layout_constraintVertical_bias="0.518"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/descTextView"
         android:layout_width="339dp"
         android:layout_height="72dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="172dp"
-        android:layout_marginEnd="33dp"
-        android:layout_marginBottom="487dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/storeListView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.541"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.259" />
 
     <ListView
         android:id="@+id/storeListView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_marginTop="331dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/siteTextView"
         android:layout_width="227dp"
         android:layout_height="19dp"
-        android:layout_marginStart="142dp"
-        android:layout_marginTop="283dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="429dp"
         android:linksClickable="true"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.761"
+        app:layout_constraintStart_toEndOf="@+id/pegiImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39" />
 </androidx.constraintlayout.widget.ConstraintLayout>

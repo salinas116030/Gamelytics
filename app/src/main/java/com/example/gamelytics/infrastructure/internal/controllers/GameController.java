@@ -2,6 +2,7 @@ package com.example.gamelytics.infrastructure.internal.controllers;
 
 import com.example.gamelytics.application.GetGameDetails;
 import com.example.gamelytics.application.SearchGame;
+import com.example.gamelytics.domain.Game;
 import com.example.gamelytics.domain.GameItem;
 import com.example.gamelytics.domain.GameRepository;
 import java.util.List;
@@ -17,7 +18,7 @@ public class GameController {
         this.UseCaseGetGameDetails = new GetGameDetails(gameRepository);
     }
 
-    public GameItem getGame(int id) {
+    public Game getGame(int id) {
         return UseCaseGetGameDetails.execute(id);
     }
 
