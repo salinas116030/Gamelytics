@@ -1,6 +1,6 @@
 package com.example.gamelytics.infrastructure;
 
-import com.example.gamelytics.domain.Game;
+import com.example.gamelytics.domain.GameItem;
 import com.example.gamelytics.domain.GameRepository;
 import com.example.gamelytics.infrastructure.external.api.SharkApiClient;
 import com.example.gamelytics.infrastructure.external.api.services.Shark.GameApiService;
@@ -19,10 +19,10 @@ public class ApiGameRepository implements GameRepository {
     }
 
     @Override
-    public Game get(int id) {
-        Call<Game> call = gameApiService.getGame(id);
+    public GameItem get(int id) {
+        Call<GameItem> call = gameApiService.getGame(id);
         try {
-            Response<Game> response = call.execute();
+            Response<GameItem> response = call.execute();
             return response.body();
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,10 +31,10 @@ public class ApiGameRepository implements GameRepository {
     }
 
     @Override
-    public List<Game> search(String name) {
-        Call<List<Game>> call = gameApiService.searchGames(name);
+    public List<GameItem> search(String name) {
+        Call<List<GameItem>> call = gameApiService.searchGames(name);
         try {
-            Response<List<Game>> response = call.execute();
+            Response<List<GameItem>> response = call.execute();
             return response.body();
         } catch (Exception e) {
             e.printStackTrace();

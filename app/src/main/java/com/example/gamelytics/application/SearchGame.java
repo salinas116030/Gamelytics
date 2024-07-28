@@ -1,6 +1,6 @@
 package com.example.gamelytics.application;
 
-import com.example.gamelytics.domain.Game;
+import com.example.gamelytics.domain.GameItem;
 import com.example.gamelytics.domain.GameRepository;
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class SearchGame {
         this.gameRepository = gameRepository;
     }
 
-    public List<Game> execute(String name) {
+    public List<GameItem> execute(String name) {
         return gameRepository.search(name);
     }
 }

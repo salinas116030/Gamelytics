@@ -8,17 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.gamelytics.R;
-import com.example.gamelytics.domain.Game;
+import com.example.gamelytics.domain.GameItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ListItemGameAdapter extends ArrayAdapter<Game> {
+public class ListItemGameAdapter extends ArrayAdapter<GameItem> {
 
-    private final List<Game> games;
+    private final List<GameItem> games;
     private final LayoutInflater inflater;
 
-    public ListItemGameAdapter(Context context, List<Game> games) {
+    public ListItemGameAdapter(Context context, List<GameItem> games) {
         super(context, 0, games);
         this.games = games;
         this.inflater = LayoutInflater.from(context);
@@ -30,7 +30,7 @@ public class ListItemGameAdapter extends ArrayAdapter<Game> {
             convertView = inflater.inflate(R.layout.list_item_game, parent, false);
         }
 
-        Game game = games.get(position);
+        GameItem game = games.get(position);
 
         TextView titleTextView = convertView.findViewById(R.id.game_title);
         ImageView logoImageView = convertView.findViewById(R.id.game_logo);

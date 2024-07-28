@@ -1,6 +1,6 @@
 package com.example.gamelytics.application;
 
-import com.example.gamelytics.domain.Game;
+import com.example.gamelytics.domain.GameItem;
 import com.example.gamelytics.domain.GameRepository;
 
 public class GetGameDetails {
@@ -10,7 +10,7 @@ public class GetGameDetails {
         this.gameRepository = gameRepository;
     }
 
-    public Game execute(int id) {
+    public GameItem execute(int id) {
         return gameRepository.get(id);
     }
 }

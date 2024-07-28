@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.gamelytics.domain.Game;
+import com.example.gamelytics.domain.GameItem;
 import com.example.gamelytics.domain.GameRepository;
 import com.example.gamelytics.infrastructure.ApiGameRepository;
 import com.example.gamelytics.infrastructure.internal.controllers.GameController;
@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private GameController gameController;
     private SearchView searchView;
     private ListView listView;
-    private ArrayAdapter<Game> adapter;
-    private List<Game> gameList ;
+    private ArrayAdapter<GameItem> adapter;
+    private List<GameItem> gameList ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Game selectedGame = adapter.getItem(position);
+                GameItem selectedGame = adapter.getItem(position);
                 Intent intent = new Intent(MainActivity.this, GameDetailedActivity.class);
                 intent.putExtra("GAME_ID", selectedGame.getAppID());
                 startActivity(intent);
@@ -70,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
     private void searchGames(String query) {
         new Thread(() -> {
             try {
-                List<Game> games = gameController.searchAllGames(query);
+                List<GameItem> games = gameController.searchAllGames(query);
                 runOnUiThread(() -> {
                     if (games != null && !games.isEmpty()) {
                         gameList = games;
                         adapter.clear();
-                        for (Game game : games) {
+                        for (GameItem game : games) {
                             adapter.add(game);
                         }
                         adapter.notifyDataSetChanged();
