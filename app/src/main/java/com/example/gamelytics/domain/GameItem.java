@@ -3,8 +3,6 @@ package com.example.gamelytics.domain;
 import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GameItem implements Serializable {
 
@@ -15,15 +13,6 @@ public class GameItem implements Serializable {
     private String title;
     @SerializedName("thumb")
     private String logo;
-    @SerializedName("date")
-    private String cheapestPriceHistory;
-    private Map<String, Store> stores;
-
-
-    // Constructor
-    public GameItem() {
-        this.stores = new HashMap<String, Store>();
-    }
 
     // Getters & Setters
     public String getTitle() {
@@ -42,37 +31,12 @@ public class GameItem implements Serializable {
         this.logo = logo;
     }
 
-    public String getCheapestPriceHistory() {
-        return cheapestPriceHistory;
-    }
-
-    public void setCheapestPriceHistory(String cheapestPriceHistory) {
-        this.cheapestPriceHistory = cheapestPriceHistory;
-    }
-
-    public Map<String, Store> getStores() {
-        return stores;
-    }
-
-    public void setStores(Map<String, Store> stores) {
-        this.stores = stores;
-    }
-
     public int getAppID() {
         return appID;
     }
 
     public void setAppID(int appID) {
         this.appID = appID;
-    }
-
-    // Custom methods
-    public Store getStoreByDealId(String dealId) {
-        return stores.get(dealId);
-    }
-
-    public void addStore(String dealId, Store store) {
-        stores.put(dealId, store);
     }
 
     // System methods
