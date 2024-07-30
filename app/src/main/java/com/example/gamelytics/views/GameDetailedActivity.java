@@ -12,19 +12,25 @@ import android.widget.Toast;
 import com.example.gamelytics.R;
 import com.example.gamelytics.domain.Game;
 import com.example.gamelytics.domain.GameRepository;
+import com.example.gamelytics.domain.steam.GameSteam;
+import com.example.gamelytics.domain.steam.GameSteamRepository;
 import com.example.gamelytics.infrastructure.ApiGameRepository;
+import com.example.gamelytics.infrastructure.ApiGameSteamRepository;
 import com.example.gamelytics.infrastructure.internal.controllers.GameController;
+import com.example.gamelytics.infrastructure.internal.controllers.steam.GameSteamController;
 import com.example.gamelytics.views.customs.ListItemDealAdapter;
 import com.squareup.picasso.Picasso;
 
 public class GameDetailedActivity extends AppCompatActivity {
 
     private GameController gameController;
+    private GameSteamController gameSteamController;
     private TextView title, description, website;
     private ImageView logo, pegi;
     private int gameid;
     ListView storeListView;
     private Game game;
+    private GameSteam gameSteam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,8 @@ public class GameDetailedActivity extends AppCompatActivity {
 
         GameRepository gameRepository = new ApiGameRepository();
         gameController = new GameController(gameRepository);
+        GameSteamRepository gameSteamRepository = new ApiGameSteamRepository();
+        gameSteamController = new GameSteamController(gameSteamRepository);
 
         title = (TextView) findViewById(R.id.titleTextView);
         description = (TextView) findViewById(R.id.descTextView);
@@ -43,16 +51,26 @@ public class GameDetailedActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         gameid = intent.getIntExtra("GAME_ID",-1);
-        title.setText(String.valueOf(gameid));
 
         new Thread(() -> {
             try {
                 game = gameController.getGame(gameid);
+                if(game.getInfo().getSteamAppID() != null && game.getInfo().getSteamAppID() != "" ){
+                    gameSteam = gameSteamController.getGame(game.getInfo().getSteamAppID());
+                }
 
                 runOnUiThread(() -> {
                     title.setText(game.getInfo().getTitle());
-                    description.setText("Steam App ID: " + game.getInfo().getSteamAppID());
                     Picasso.get().load(game.getInfo().getThumb()).into(logo);
+
+                    if(gameSteam !=null) {
+                        description.setText(gameSteam.getGameInfo().getData().getDetailedDescription());
+                        website.setText(gameSteam.getGameInfo().getData().getWebsite());
+                        String pegiAge = Integer.toString(gameSteam.getGameInfo().getData().getRequiredAge());
+                        String uri = "@drawable/icons8_pegi_" + pegiAge;
+                        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                        pegi.setImageDrawable(getResources().getDrawable(imageResource));
+                    }
 
                     ListItemDealAdapter dealAdapter = new ListItemDealAdapter(this, game.getDeals());
                     storeListView.setAdapter(dealAdapter);
@@ -62,34 +80,6 @@ public class GameDetailedActivity extends AppCompatActivity {
                 runOnUiThread(() -> Toast.makeText(GameDetailedActivity.this, "Error searching games", Toast.LENGTH_SHORT).show());
             }
         }).start();
-
-
-
-        /*
-        application.getGameDetails(Integer.toString(gameid), new FetchResultListener() {
-            @Override
-            public void onResultFetched(Game result) {
-                if (result != null) {
-                    title.setText(result.getName());
-                    description.setText(result.getShortDesc());
-                    website.setText(result.getWebsite());
-                    Picasso.get().load(result.getGameLogo()).into(logo);
-                    String pegiAge = Integer.toString(result.getPegiAge());
-                    String uri = "@drawable/icons8_pegi_" + pegiAge;
-                    int imageResource = getResources().getIdentifier(uri, null, getPackageName());
-                    if (!pegiAge.equals("0")) {
-                        pegi.setImageDrawable(getResources().getDrawable(imageResource));
-                    }
-                    application.setConsultedGame(result);
-                } else {
-                    // Implement suitable error handler
-                }
-            }
-        });
-
-         */
-
-        //Game game = gameController.getGame(gameid);
 
         // Aqui falta poner el controller que llame endpoint getAllStores y obtener storeListView custom con logoStore,nombre,precio
 
