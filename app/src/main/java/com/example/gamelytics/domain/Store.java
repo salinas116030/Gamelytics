@@ -2,18 +2,31 @@ package com.example.gamelytics.domain;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Store {
 
     // Attributes
+    @SerializedName("storeID")
+    private String id;
+    @SerializedName("storeName")
     private String name;
-    private String logo;
-    private String banner;
+    @SerializedName("images")
+    private StoreImages storeImages;
 
     // Constructor
     public Store() {
     }
 
     // Getters & Setters
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -22,26 +35,18 @@ public class Store {
         this.name = name;
     }
 
-    public String getLogo() {
-        return logo;
+    public StoreImages getStoreImages() {
+        return storeImages;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public String getBanner() {
-        return banner;
-    }
-
-    public void setBanner(String banner) {
-        this.banner = banner;
+    public void setStoreImages(StoreImages storeImages) {
+        this.storeImages = storeImages;
     }
 
     // System methods
     @NonNull
     @Override
     public String toString() {
-        return "Store{name='" + name + "', logo='" + logo + "', banner='" + banner + "'}";
+        return "Store{name='" + name + "'}";
     }
 }
