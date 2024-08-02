@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#F5EEF8"
     android:padding="8dp">
 
     <!-- Static Header Row -->
@@ -19,136 +21,138 @@
             android:id="@+id/staticLogoHeader"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="Logo"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:background="@android:color/darker_gray"
+            android:textSize="10.5sp"
+            android:background="@android:color/background_light"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/staticStoreIDTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/staticLogoHeader"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintWidth_percent="0.25"
             android:text="Store"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:background="@android:color/darker_gray"
+            android:textSize="10.5sp"
+            android:background="@android:color/background_light"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/staticPriceTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/staticStoreIDTextView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintWidth_percent="0.25"
             android:text="Price"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:background="@android:color/darker_gray"
+            android:textSize="10.5sp"
+            android:background="@android:color/background_light"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/staticRetailPriceTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/staticPriceTextView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintWidth_percent="0.25"
+            app:layout_constraintWidth_percent="0.2"
             android:text="Retail Price"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:background="@android:color/darker_gray"
+            android:textSize="10.5sp"
+            android:background="@android:color/background_light"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/staticSavingsTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/staticRetailPriceTextView"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"
+            android:background="@android:color/background_light"
+            android:gravity="center"
+            android:text="Savings %"
+            android:textColor="@android:color/black"
+            android:textSize="10.5sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.25"
-            android:text="Savings"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:background="@android:color/darker_gray"
-            android:gravity="center" />
+            app:layout_constraintHorizontal_bias="0.29"
+            app:layout_constraintStart_toEndOf="@id/staticRetailPriceTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Dynamic Content Row -->
+
     <ImageView
         android:id="@+id/logoImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/staticHeaderRow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="14dp"/>
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/storeIDTextView"
-        android:layout_width="0dp"
-        android:layout_height="17dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="52dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="7dp"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/logoImageView"
-        app:layout_constraintTop_toBottomOf="@id/staticHeaderRow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/priceTextView"
-        app:layout_constraintWidth_percent="0.25"
-        app:layout_constraintVertical_bias="0.575" />
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/logoImageView"
+        app:layout_constraintTop_toBottomOf="@+id/staticHeaderRow"
+        app:layout_constraintWidth_percent="0.25" />
 
     <TextView
         android:id="@+id/priceTextView"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="17dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="48dp"
         android:textColor="@android:color/black"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/storeIDTextView"
         app:layout_constraintTop_toBottomOf="@id/staticHeaderRow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/retailPriceTextView"
-        app:layout_constraintWidth_percent="0.25"
-        app:layout_constraintVertical_bias="0.575" />
+        app:layout_constraintVertical_bias="0.555"
+        app:layout_constraintWidth_percent="0.25" />
 
     <TextView
         android:id="@+id/retailPriceTextView"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="17dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="4dp"
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/priceTextView"
-        app:layout_constraintTop_toBottomOf="@id/staticHeaderRow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/savingsTextView"
-        app:layout_constraintWidth_percent="0.25"
-        app:layout_constraintVertical_bias="0.575" />
+        app:layout_constraintWidth_percent="0.25" />
 
     <TextView
         android:id="@+id/savingsTextView"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="17dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         android:textColor="@android:color/black"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/retailPriceTextView"
-        app:layout_constraintTop_toBottomOf="@id/staticHeaderRow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.25"
-        app:layout_constraintVertical_bias="0.575" />
+        app:layout_constraintWidth_percent="0.25" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
