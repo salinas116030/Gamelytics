@@ -5,21 +5,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gamelytics.R;
 import com.example.gamelytics.domain.DealItem;
-import com.example.gamelytics.domain.Game;
+import com.example.gamelytics.domain.Store;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ListItemDealAdapter extends BaseAdapter {
     private Context context;
     private List<DealItem> deals;
+    private List<Store> stores;
+    private String icon;
 
-    public ListItemDealAdapter(Context context, List<DealItem> deals) {
+    public ListItemDealAdapter(Context context, List<DealItem> deals, List<Store> stores) {
         this.context = context;
         this.deals = deals;
+        this.stores = stores;
     }
 
     @Override
@@ -45,11 +50,20 @@ public class ListItemDealAdapter extends BaseAdapter {
 
         DealItem deal = deals.get(position);
 
+        ImageView logoImageView = convertView.findViewById(R.id.logoImageView);
         TextView storeIDTextView = convertView.findViewById(R.id.storeIDTextView);
         TextView priceTextView = convertView.findViewById(R.id.priceTextView);
         TextView retailPriceTextView = convertView.findViewById(R.id.retailPriceTextView);
         TextView savingsTextView = convertView.findViewById(R.id.savingsTextView);
 
+        for (Store store :stores){
+            if(store.getId().equals(deal.getStoreID())){
+                icon = store.getStoreImages().getIcon();
+                break;
+            }
+        };
+
+        Picasso.get().load("https://www.cheapshark.com"+icon).resize(16, 16).into(logoImageView);
         storeIDTextView.setText(deal.getStoreID());
         priceTextView.setText(deal.getPrice());
         retailPriceTextView.setText(deal.getRetailPrice());
