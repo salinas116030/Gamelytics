@@ -37,12 +37,12 @@ public class PriceDetailedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_price_detailed);
+        setContentView(R.layout.activity_deal);
 
         application = (MainApplication) getApplicationContext();
-        countryFlag = (ImageView) findViewById(R.id.flagCtrImageView);
-        localCurr = (TextView) findViewById(R.id.localCurrTextView);
-        outCurr = (TextView) findViewById(R.id.outCurrTextView);
+        countryFlag = (ImageView) findViewById(R.id.dealImageView);
+        localCurr = (TextView) findViewById(R.id.releaseDateTextView);
+        outCurr = (TextView) findViewById(R.id.releaseDate);
         shopListView = (ListView) findViewById(R.id.shopListView);
 
         // Retrieve passed information from game screen
