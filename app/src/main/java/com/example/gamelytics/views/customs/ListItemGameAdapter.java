@@ -36,7 +36,7 @@ public class ListItemGameAdapter extends ArrayAdapter<GameItem> {
         ImageView logoImageView = convertView.findViewById(R.id.game_logo);
 
         titleTextView.setText(game.getTitle());
-        Picasso.get().load(game.getLogo()).resize(50, 50).into(logoImageView);
+        Picasso.get().load(game.getLogo()).resize(100, 45).into(logoImageView);
 
         return convertView;
     }
