@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,18 +13,25 @@ import android.widget.Toast;
 import com.example.gamelytics.R;
 import com.example.gamelytics.domain.Game;
 import com.example.gamelytics.domain.GameRepository;
+import com.example.gamelytics.domain.Store;
+import com.example.gamelytics.domain.StoreRepository;
 import com.example.gamelytics.domain.steam.GameSteam;
 import com.example.gamelytics.domain.steam.GameSteamRepository;
 import com.example.gamelytics.infrastructure.ApiGameRepository;
 import com.example.gamelytics.infrastructure.ApiGameSteamRepository;
+import com.example.gamelytics.infrastructure.ApiStoreRepository;
 import com.example.gamelytics.infrastructure.internal.controllers.GameController;
+import com.example.gamelytics.infrastructure.internal.controllers.StoreController;
 import com.example.gamelytics.infrastructure.internal.controllers.steam.GameSteamController;
 import com.example.gamelytics.views.customs.ListItemDealAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class GameDetailedActivity extends AppCompatActivity {
 
     private GameController gameController;
+    private StoreController storeController;
     private GameSteamController gameSteamController;
     private TextView title, description, website;
     private ImageView logo, pegi;
@@ -31,6 +39,7 @@ public class GameDetailedActivity extends AppCompatActivity {
     ListView storeListView;
     private Game game;
     private GameSteam gameSteam;
+    private List<Store> stores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,8 @@ public class GameDetailedActivity extends AppCompatActivity {
         gameController = new GameController(gameRepository);
         GameSteamRepository gameSteamRepository = new ApiGameSteamRepository();
         gameSteamController = new GameSteamController(gameSteamRepository);
+        StoreRepository storeRepository = new ApiStoreRepository();
+        storeController = new StoreController(storeRepository);
 
         title = (TextView) findViewById(R.id.titleTextView);
         description = (TextView) findViewById(R.id.descTextView);
@@ -51,13 +62,16 @@ public class GameDetailedActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         gameid = intent.getIntExtra("GAME_ID",-1);
-
+        pegi.setVisibility(View.GONE);
+        
         new Thread(() -> {
             try {
                 game = gameController.getGame(gameid);
+                stores = storeController.getAllStores();
                 if(game.getInfo().getSteamAppID() != null && game.getInfo().getSteamAppID() != "" ){
                     gameSteam = gameSteamController.getGame(game.getInfo().getSteamAppID());
                 }
+
 
                 runOnUiThread(() -> {
                     title.setText(game.getInfo().getTitle());
@@ -66,13 +80,20 @@ public class GameDetailedActivity extends AppCompatActivity {
                     if(gameSteam !=null) {
                         description.setText(gameSteam.getGameInfo().getData().getDetailedDescription());
                         website.setText(gameSteam.getGameInfo().getData().getWebsite());
+
                         String pegiAge = Integer.toString(gameSteam.getGameInfo().getData().getRequiredAge());
                         String uri = "@drawable/icons8_pegi_" + pegiAge;
                         int imageResource = getResources().getIdentifier(uri, null, getPackageName());
-                        pegi.setImageDrawable(getResources().getDrawable(imageResource));
+
+                        if (imageResource != 0) {
+                            pegi.setImageDrawable(getResources().getDrawable(imageResource, null));
+                            pegi.setVisibility(View.VISIBLE);
+                        } else {
+                            pegi.setVisibility(View.GONE);
+                        }
                     }
 
-                    ListItemDealAdapter dealAdapter = new ListItemDealAdapter(this, game.getDeals());
+                    ListItemDealAdapter dealAdapter = new ListItemDealAdapter(this, game.getDeals(),stores);
                     storeListView.setAdapter(dealAdapter);
                 });
             } catch (Exception e) {
@@ -81,9 +102,6 @@ public class GameDetailedActivity extends AppCompatActivity {
             }
         }).start();
 
-        // Aqui falta poner el controller que llame endpoint getAllStores y obtener storeListView custom con logoStore,nombre,precio
-
-        // Go next view
         /*
         storeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
