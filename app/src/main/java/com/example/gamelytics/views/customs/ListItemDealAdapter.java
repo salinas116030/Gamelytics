@@ -27,6 +27,12 @@ public class ListItemDealAdapter extends BaseAdapter {
         this.stores = stores;
     }
 
+    public void updateData(List<DealItem> newDeals, List<Store> newStores) {
+        this.deals = newDeals;
+        this.stores = newStores;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return deals.size();
