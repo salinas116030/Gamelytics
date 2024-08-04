@@ -88,23 +88,6 @@ public class PriceDetailedActivity extends AppCompatActivity {
         //});
         /**END OF EXAMPLE**/
 
-        application.getBasketForGame(countryName, currencyCode, (int) outPrice, new FetchResultListener() {
-            @Override
-            public void onResultFetched(Game result) {
-                if (result != null) {
-                    outCurr.setText(application.getGameBasket().getTotalPriceInCurrency() + " "
-                                    + currencyCode);
-                    localCurr.setText(application.getGameBasket().getTotalPriceInEUR() + "€");
-                    for (GiftCard card: application.getGameBasket().getBasket()) {
-                        shopArrayAdapter.add(card);
-                        shopArrayAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        });
-
-
-
         shopListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
