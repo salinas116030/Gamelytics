@@ -21,7 +21,7 @@
             android:name=".views.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".views.PriceDetailedActivity"
+            android:name=".views.DealActivity"
             android:exported="false" />
         <activity
             android:name=".views.GameDetailedActivity"

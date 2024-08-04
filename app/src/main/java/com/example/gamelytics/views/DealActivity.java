@@ -1,81 +1,95 @@
 package com.example.gamelytics.views;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.net.Uri;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
-
 import android.os.Bundle;
+import android.widget.Toast;
 
-import com.blongho.country_data.World;
-import com.example.gamelytics.BusinessLayer.FetchResultListener;
-import com.example.gamelytics.BusinessLayer.MainApplication;
 import com.example.gamelytics.DataLayer.AndroidCustoms.CustomShopAdapter;
-import com.example.gamelytics.DataLayer.Game;
 import com.example.gamelytics.DataLayer.GiftCard;
 import com.example.gamelytics.R;
+import com.example.gamelytics.domain.Deal;
+import com.example.gamelytics.domain.DealRepository;
+import com.example.gamelytics.domain.steam.GameSteam;
+import com.example.gamelytics.domain.steam.Screenshot;
+import com.example.gamelytics.infrastructure.ApiDealRepository;
+import com.example.gamelytics.infrastructure.ApiGameSteamRepository;
+import com.example.gamelytics.infrastructure.internal.controllers.DealController;
+import com.example.gamelytics.infrastructure.internal.controllers.steam.GameSteamController;
+import com.example.gamelytics.views.customs.ListItemScreenshotAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PriceDetailedActivity extends AppCompatActivity {
+public class DealActivity extends AppCompatActivity {
 
-    Bundle bundle;
-    TextView localCurr, outCurr;
-    ImageView countryFlag;
-    ListView shopListView;
-    MainApplication application;
-    double outPrice;
-    String currencyCode;
-    String countryName;
-    String countryCode;
+    private DealController dealController;
+    private GameSteamController gameSteamController;
+    private TextView releaseDate, releaseRating, retailPrice, salePrice, titleGame;
+    private ImageView imageGame, imageWindows, imageMac, imageLinux;
+    private ListView screenshotList;
+    private String dealId;
+    private Deal deal;
+    private GameSteam gameSteam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deal);
 
-        application = (MainApplication) getApplicationContext();
-        countryFlag = (ImageView) findViewById(R.id.dealImageView);
-        localCurr = (TextView) findViewById(R.id.releaseDateTextView);
-        outCurr = (TextView) findViewById(R.id.releaseDate);
-        shopListView = (ListView) findViewById(R.id.shopListView);
+        DealRepository dealRepository = new ApiDealRepository();
+        dealController = new DealController(dealRepository);
+        ApiGameSteamRepository apiGameSteamRepository = new ApiGameSteamRepository();
+        gameSteamController = new GameSteamController(apiGameSteamRepository);
 
-        // Retrieve passed information from game screen
-        bundle = getIntent().getExtras();
-        outPrice = bundle.getDouble("outPrice");
-        currencyCode = bundle.getString("outCurr");
-        countryName = bundle.getString("countryName");
-        countryCode = bundle.getString("countryCode");
+        imageGame = findViewById(R.id.dealImageView);
+        releaseDate = findViewById(R.id.releaseDateView);
+        releaseRating = findViewById(R.id.releaseRatingView);
+        retailPrice = findViewById(R.id.retailPriceView);
+        salePrice = findViewById(R.id.salePriceView);
+        titleGame = findViewById(R.id.titleDealTextView);
+        imageWindows = findViewById(R.id.imageWindowsView);
+        imageMac = findViewById(R.id.imageMacView);
+        imageLinux = findViewById(R.id.imageLinuxView);
+        screenshotList = findViewById(R.id.screenshotListView);
 
-        ArrayList<GiftCard> arrayList = new ArrayList<GiftCard>();
-        CustomShopAdapter shopArrayAdapter = new CustomShopAdapter(this, arrayList);
-        shopListView.setAdapter(shopArrayAdapter);
+        Intent intent = getIntent();
+        dealId = intent.getStringExtra("DEAL_ID");
 
-        countryFlag.setImageResource(World.getFlagOf(countryCode));
+        new Thread(() -> {
+            try {
+                deal = dealController.getDeal(dealId);
+                if(deal.getGameInfo().getSteamAppId() != null && deal.getGameInfo().getSteamAppId() != "" ){
+                    gameSteam = gameSteamController.getGame(deal.getGameInfo().getSteamAppId());
+                }
 
-        // TODO Retrieve different shops
-        /** JSON STRUCTURE RETURNAL
-         * {
-         *  data: [
-         *      [
-         *          precio,
-         *          shopname,
-         *          url
-         *      ],
-         *   ],
-         *   minimum: -,
-         *   num: -,
-         *   used: [
-         *      cardval
-         *   ]
-         * }
-         */
+                runOnUiThread(() -> {
+                    titleGame.setText(deal.getGameInfo().getTitleGame());
+                    Picasso.get().load(deal.getGameInfo().getLogoGame()).into(imageGame);
+                    releaseRating.setText(deal.getGameInfo().getRating());
+                    retailPrice.setText(deal.getGameInfo().getRetailPrice());
+                    salePrice.setText(deal.getGameInfo().getSalePrice());
 
+                    if(gameSteam !=null) {
+                        releaseDate.setText(gameSteam.getGameInfo().getData().getReleaseDate().getDate());
+                        List<Screenshot> screenshots = gameSteam.getGameInfo().getData().getScreenshots();
+                        ListItemScreenshotAdapter screenshotAdapter = new ListItemScreenshotAdapter(this, screenshots);
+                        screenshotList.setAdapter(screenshotAdapter);
+                    }
+                    /*
+                    dealAdapter.updateData(game.getDeals(),stores);
+                    storeListView.setAdapter(dealAdapter);
+                    */
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(DealActivity.this, "Error searching deal values", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
 
         /**EXAMPLE WITH BUTTON ON HOW TO OPEN WEB BROWSER**/
         //Button button = findViewById(R.id.button);
@@ -87,16 +101,5 @@ public class PriceDetailedActivity extends AppCompatActivity {
             //}
         //});
         /**END OF EXAMPLE**/
-
-        shopListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Open mobile web browser with URLs from the selected option
-                Intent intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(shopArrayAdapter.getItem(position).getUrl()));
-                startActivity(intent);
-            }
-        });
-
     }
 }
