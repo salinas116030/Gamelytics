@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gamelytics.R;
+import com.example.gamelytics.domain.DealItem;
 import com.example.gamelytics.domain.Game;
 import com.example.gamelytics.domain.GameRepository;
 import com.example.gamelytics.domain.Store;
@@ -26,6 +28,7 @@ import com.example.gamelytics.infrastructure.internal.controllers.steam.GameStea
 import com.example.gamelytics.views.customs.ListItemDealAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameDetailedActivity extends AppCompatActivity {
@@ -40,6 +43,7 @@ public class GameDetailedActivity extends AppCompatActivity {
     private Game game;
     private GameSteam gameSteam;
     private List<Store> stores;
+    ListItemDealAdapter dealAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,9 @@ public class GameDetailedActivity extends AppCompatActivity {
         StoreRepository storeRepository = new ApiStoreRepository();
         storeController = new StoreController(storeRepository);
 
+        // Inicializar el adaptador con listas vacías
+        dealAdapter = new ListItemDealAdapter(this, new ArrayList<>(), new ArrayList<>());
+
         title = (TextView) findViewById(R.id.titleTextView);
         description = (TextView) findViewById(R.id.descTextView);
         website = (TextView) findViewById(R.id.siteTextView);
@@ -63,7 +70,17 @@ public class GameDetailedActivity extends AppCompatActivity {
         Intent intent = getIntent();
         gameid = intent.getIntExtra("GAME_ID",-1);
         pegi.setVisibility(View.GONE);
-        
+
+        storeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DealItem selectedDeal = (DealItem) dealAdapter.getItem(position);
+                Intent intent = new Intent(GameDetailedActivity.this, DealActivity.class);
+                intent.putExtra("DEAL_ID", selectedDeal.getDealID());
+                startActivity(intent);
+            }
+        });
+
         new Thread(() -> {
             try {
                 game = gameController.getGame(gameid);
@@ -71,7 +88,6 @@ public class GameDetailedActivity extends AppCompatActivity {
                 if(game.getInfo().getSteamAppID() != null && game.getInfo().getSteamAppID() != "" ){
                     gameSteam = gameSteamController.getGame(game.getInfo().getSteamAppID());
                 }
-
 
                 runOnUiThread(() -> {
                     title.setText(game.getInfo().getTitle());
@@ -92,8 +108,7 @@ public class GameDetailedActivity extends AppCompatActivity {
                             pegi.setVisibility(View.GONE);
                         }
                     }
-
-                    ListItemDealAdapter dealAdapter = new ListItemDealAdapter(this, game.getDeals(),stores);
+                    dealAdapter.updateData(game.getDeals(),stores);
                     storeListView.setAdapter(dealAdapter);
                 });
             } catch (Exception e) {
@@ -101,24 +116,5 @@ public class GameDetailedActivity extends AppCompatActivity {
                 runOnUiThread(() -> Toast.makeText(GameDetailedActivity.this, "Error searching games", Toast.LENGTH_SHORT).show());
             }
         }).start();
-
-        /*
-        storeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Country selCountry = countryArrayAdapter.getItem(position);
-                Bundle bundle = new Bundle();
-                bundle.putString("countryName", selCountry.getName());
-                bundle.putString("countryCode", selCountry.getTwoCode());
-                bundle.putDouble("outPrice", selCountry.getPrice());
-                bundle.putString("outCurr", selCountry.getCoinSymbol());
-                Intent intent = new Intent(GameDetailedActivity.this, PriceDetailedActivity.class);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, FlowStates.SHOW_DISPLAYACTIVITY);
-            }
-        });
-
-         */
     }
-
 }
