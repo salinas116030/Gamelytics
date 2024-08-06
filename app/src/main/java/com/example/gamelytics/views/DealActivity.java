@@ -58,6 +58,7 @@ public class DealActivity extends AppCompatActivity {
         imageMac = findViewById(R.id.imageMacView);
         imageLinux = findViewById(R.id.imageLinuxView);
         screenshotList = findViewById(R.id.screenshotListView);
+        buyGame = findViewById(R.id.buyDealButton);
 
         Intent intent = getIntent();
         dealId = intent.getStringExtra("DEAL_ID");
@@ -65,6 +66,15 @@ public class DealActivity extends AppCompatActivity {
         imageWindows.setVisibility(View.GONE);
         imageMac.setVisibility(View.GONE);
         imageLinux.setVisibility(View.GONE);
+
+        buyGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://www.cheapshark.com/redirect?dealID=" + dealId;
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            }
+        });
 
         new Thread(() -> {
             try {
@@ -109,15 +119,6 @@ public class DealActivity extends AppCompatActivity {
             }
         }).start();
 
-        /**EXAMPLE WITH BUTTON ON HOW TO OPEN WEB BROWSER**/
-        //Button button = findViewById(R.id.button);
-        //button.setOnClickListener(new View.OnClickListener() {
-          //  @Override
-            //public void onClick(View v) {
-              //  Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.amazon.com"));
-                //startActivity(intent);
-            //}
-        //});
-        /**END OF EXAMPLE**/
+
     }
 }
