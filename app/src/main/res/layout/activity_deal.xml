@@ -28,11 +28,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/platformsTextView" />
 
+
+    <TextView
+        android:id="@+id/salePriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="228dp"
+        android:layout_marginTop="48dp"
+        android:text="Precio Actual"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/releaseDateView" />
+
     <TextView
         android:id="@+id/releaseDateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.691"
@@ -43,10 +54,10 @@
         android:id="@+id/releaseRatingView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.203"
+        app:layout_constraintHorizontal_bias="0.198"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingTextView" />
 
@@ -60,6 +71,7 @@
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buyDealButton"
         app:layout_constraintVertical_bias="1.0" />
@@ -98,7 +110,7 @@
         android:id="@+id/buyDealButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="108dp"
         android:text="Comprar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.456"
@@ -142,26 +154,38 @@
         app:layout_constraintTop_toBottomOf="@+id/dealImageView" />
 
     <TextView
+        android:id="@+id/retailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="43dp"
+        android:text="Precio Antiguo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/releaseRatingView" />
+
+    <TextView
         android:id="@+id/retailPriceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="21dp"
         android:text="retailPriceView"
         app:layout_constraintBottom_toTopOf="@+id/buyDealButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/releaseRatingView" />
+        app:layout_constraintTop_toBottomOf="@+id/releaseRatingView"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/salePriceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="65dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="90dp"
         android:text="salePriceView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.352"
         app:layout_constraintStart_toEndOf="@+id/retailPriceView"
         app:layout_constraintTop_toBottomOf="@+id/releaseDateView" />
 

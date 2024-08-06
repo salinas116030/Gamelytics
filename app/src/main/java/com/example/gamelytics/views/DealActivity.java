@@ -2,18 +2,18 @@ package com.example.gamelytics.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.gamelytics.DataLayer.AndroidCustoms.CustomShopAdapter;
-import com.example.gamelytics.DataLayer.GiftCard;
 import com.example.gamelytics.R;
 import com.example.gamelytics.domain.Deal;
 import com.example.gamelytics.domain.DealRepository;
 import com.example.gamelytics.domain.steam.GameSteam;
+import com.example.gamelytics.domain.steam.Platforms;
 import com.example.gamelytics.domain.steam.Screenshot;
 import com.example.gamelytics.infrastructure.ApiDealRepository;
 import com.example.gamelytics.infrastructure.ApiGameSteamRepository;
@@ -60,6 +60,10 @@ public class DealActivity extends AppCompatActivity {
         Intent intent = getIntent();
         dealId = intent.getStringExtra("DEAL_ID");
 
+        imageWindows.setVisibility(View.GONE);
+        imageMac.setVisibility(View.GONE);
+        imageLinux.setVisibility(View.GONE);
+
         new Thread(() -> {
             try {
                 deal = dealController.getDeal(dealId);
@@ -79,11 +83,23 @@ public class DealActivity extends AppCompatActivity {
                         List<Screenshot> screenshots = gameSteam.getGameInfo().getData().getScreenshots();
                         ListItemScreenshotAdapter screenshotAdapter = new ListItemScreenshotAdapter(this, screenshots);
                         screenshotList.setAdapter(screenshotAdapter);
+
+                        Platforms platforms = gameSteam.getGameInfo().getData().getPlatforms();
+
+                        imageWindows.setVisibility(platforms.isWindows() ? View.VISIBLE : View.GONE);
+                        imageMac.setVisibility(platforms.isMac() ? View.VISIBLE : View.GONE);
+                        imageLinux.setVisibility(platforms.isLinux() ? View.VISIBLE : View.GONE);
+
+                        if (platforms.isWindows()) {
+                            imageWindows.setImageResource(R.drawable.ic_windows);
+                        }
+                        if (platforms.isMac()) {
+                            imageMac.setImageResource(R.drawable.ic_apple);
+                        }
+                        if (platforms.isLinux()) {
+                            imageLinux.setImageResource(R.drawable.ic_linux);
+                        }
                     }
-                    /*
-                    dealAdapter.updateData(game.getDeals(),stores);
-                    storeListView.setAdapter(dealAdapter);
-                    */
                 });
             } catch (Exception e) {
                 e.printStackTrace();
