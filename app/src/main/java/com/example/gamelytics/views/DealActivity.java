@@ -2,7 +2,9 @@ package com.example.gamelytics.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
@@ -22,7 +24,6 @@ import com.example.gamelytics.infrastructure.internal.controllers.steam.GameStea
 import com.example.gamelytics.views.customs.ListItemScreenshotAdapter;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DealActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class DealActivity extends AppCompatActivity {
     private TextView releaseDate, releaseRating, retailPrice, salePrice, titleGame;
     private ImageView imageGame, imageWindows, imageMac, imageLinux;
     private ListView screenshotList;
+    private Button buyGame;
     private String dealId;
     private Deal deal;
     private GameSteam gameSteam;
