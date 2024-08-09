@@ -46,6 +46,7 @@ public class GameDetailedActivity extends AppCompatActivity {
     private Game game;
     private GameSteam gameSteam;
     private List<Store> stores;
+    private String cleanedDescription;
     ListItemDealAdapter dealAdapter;
 
     @Override
@@ -112,7 +113,8 @@ public class GameDetailedActivity extends AppCompatActivity {
                     Picasso.get().load(game.getInfo().getThumb()).into(logo);
 
                     if(gameSteam !=null) {
-                        description.setText(gameSteam.getGameInfo().getData().getDetailedDescription());
+                        cleanedDescription = removeHTMLTagsAndUrls(gameSteam.getGameInfo().getData().getDetailedDescription());
+                        description.setText(cleanedDescription);
 
                         String pegiAge = Integer.toString(gameSteam.getGameInfo().getData().getRequiredAge());
                         String uri = "@drawable/icons8_pegi_" + pegiAge;
@@ -133,5 +135,18 @@ public class GameDetailedActivity extends AppCompatActivity {
                 runOnUiThread(() -> Toast.makeText(GameDetailedActivity.this, "Error searching games", Toast.LENGTH_SHORT).show());
             }
         }).start();
+    }
+
+    private String removeHTMLTagsAndUrls(String input) {
+        // Eliminar etiquetas HTML
+        String noHTMLString = input.replaceAll("<[^>]*>", " ");
+
+        // Eliminar URLs
+        String noUrlsString = noHTMLString.replaceAll("https?://\\S+\\s?", " ");
+
+        // Eliminar caracteres no deseados, excepto letras, puntos, tildes y comas
+        String cleanedString = noUrlsString.replaceAll("[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ.,\\s]", " ");
+
+        return cleanedString.trim();
     }
 }
