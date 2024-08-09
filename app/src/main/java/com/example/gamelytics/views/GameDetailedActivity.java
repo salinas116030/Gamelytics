@@ -107,9 +107,8 @@ public class GameDetailedActivity extends AppCompatActivity {
                 }
 
                 runOnUiThread(() -> {
-                    //title.setText(game.getInfo().getTitle());
-                    title.setText(game.getInfo().getSteamAppID());
-
+                    title.setText(game.getInfo().getTitle());
+                    
                     Picasso.get().load(game.getInfo().getThumb()).into(logo);
 
                     if(gameSteam !=null) {
