@@ -3,9 +3,11 @@ package com.example.gamelytics.views;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +40,7 @@ public class GameDetailedActivity extends AppCompatActivity {
     private GameSteamController gameSteamController;
     private TextView title, description, website;
     private ImageView logo, pegi;
+    private Button moreInfoSiteButton;
     private int gameid;
     ListView storeListView;
     private Game game;
@@ -62,7 +65,7 @@ public class GameDetailedActivity extends AppCompatActivity {
 
         title = (TextView) findViewById(R.id.titleTextView);
         description = (TextView) findViewById(R.id.descTextView);
-        website = (TextView) findViewById(R.id.siteTextView);
+        moreInfoSiteButton = (Button) findViewById(R.id.siteButton);
         logo = (ImageView) findViewById(R.id.logoImageView);
         pegi = (ImageView) findViewById(R.id.pegiImageView);
         storeListView = (ListView) findViewById(R.id.storeListView);
@@ -81,6 +84,19 @@ public class GameDetailedActivity extends AppCompatActivity {
             }
         });
 
+        moreInfoSiteButton.setOnClickListener(v -> {
+            if(gameSteam != null){
+                String url = gameSteam.getGameInfo().getData().getWebsite();
+                if (url != null && !url.isEmpty()) {
+                    Intent intentMoreInformation = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intentMoreInformation);
+                } else {
+                    Toast.makeText(GameDetailedActivity.this, "URL no disponible", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
         new Thread(() -> {
             try {
                 game = gameController.getGame(gameid);
@@ -90,12 +106,13 @@ public class GameDetailedActivity extends AppCompatActivity {
                 }
 
                 runOnUiThread(() -> {
-                    title.setText(game.getInfo().getTitle());
+                    //title.setText(game.getInfo().getTitle());
+                    title.setText(game.getInfo().getSteamAppID());
+
                     Picasso.get().load(game.getInfo().getThumb()).into(logo);
 
                     if(gameSteam !=null) {
                         description.setText(gameSteam.getGameInfo().getData().getDetailedDescription());
-                        website.setText(gameSteam.getGameInfo().getData().getWebsite());
 
                         String pegiAge = Integer.toString(gameSteam.getGameInfo().getData().getRequiredAge());
                         String uri = "@drawable/icons8_pegi_" + pegiAge;
