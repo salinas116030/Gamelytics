@@ -30,13 +30,14 @@ public class DealActivity extends AppCompatActivity {
 
     private DealController dealController;
     private GameSteamController gameSteamController;
-    private TextView releaseDate, releaseRating, retailPrice, salePrice, titleGame;
+    private TextView releaseDate, retailPrice, salePrice, titleGame;
     private ImageView imageGame, imageWindows, imageMac, imageLinux;
     private ListView screenshotList;
     private Button buyGame;
-    private String dealId;
+    private String dealId,releaseRating;
     private Deal deal;
     private GameSteam gameSteam;
+    private ImageView imageRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class DealActivity extends AppCompatActivity {
 
         imageGame = findViewById(R.id.dealImageView);
         releaseDate = findViewById(R.id.releaseDateView);
-        releaseRating = findViewById(R.id.releaseRatingView);
         retailPrice = findViewById(R.id.retailPriceView);
         salePrice = findViewById(R.id.salePriceView);
         titleGame = findViewById(R.id.titleDealTextView);
@@ -58,6 +58,7 @@ public class DealActivity extends AppCompatActivity {
         imageMac = findViewById(R.id.imageMacView);
         imageLinux = findViewById(R.id.imageLinuxView);
         screenshotList = findViewById(R.id.screenshotListView);
+        imageRating = findViewById(R.id.releaseRatingImageView);
         buyGame = findViewById(R.id.buyDealButton);
 
         Intent intent = getIntent();
@@ -66,6 +67,7 @@ public class DealActivity extends AppCompatActivity {
         imageWindows.setVisibility(View.GONE);
         imageMac.setVisibility(View.GONE);
         imageLinux.setVisibility(View.GONE);
+        imageRating.setVisibility(View.GONE);
 
         buyGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,9 +88,27 @@ public class DealActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     titleGame.setText(deal.getGameInfo().getTitleGame());
                     Picasso.get().load(deal.getGameInfo().getLogoGame()).into(imageGame);
-                    releaseRating.setText(deal.getGameInfo().getRating());
                     retailPrice.setText(deal.getGameInfo().getRetailPrice());
                     salePrice.setText(deal.getGameInfo().getSalePrice());
+
+                    releaseRating = deal.getGameInfo().getRating();
+                    if (releaseRating != null) {
+                        switch (releaseRating) {
+                            case "Very Positive":
+                                imageRating.setImageResource(R.drawable.four_stars);
+                                imageRating.getLayoutParams().width = 250;
+                                imageRating.getLayoutParams().height = 250;
+                                break;
+                            case "Overwhelmingly Positive":
+                                imageRating.setImageResource(R.drawable.five_stars);
+                                imageRating.getLayoutParams().width = 200;
+                                imageRating.getLayoutParams().height = 200;
+                                break;
+                            default:
+                                imageRating.setImageResource(R.drawable.three_stars);
+                        }
+                        imageRating.setVisibility(View.VISIBLE);
+                    }
 
                     if(gameSteam !=null) {
                         releaseDate.setText(gameSteam.getGameInfo().getData().getReleaseDate().getDate());
