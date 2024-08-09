@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     tools:context=".views.GameDetailedActivity">
 
     <TextView
@@ -31,17 +32,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.171"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:layout_constraintVertical_bias="0.171" />
 
     <ImageView
         android:id="@+id/pegiImageView"
         android:layout_width="100dp"
         android:layout_height="60dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/storeListView"
         app:layout_constraintStart_toStartOf="@+id/descTextView"
         app:layout_constraintTop_toBottomOf="@+id/descTextView"
-        app:layout_constraintVertical_bias="0.518"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
@@ -58,10 +58,11 @@
     <ListView
         android:id="@+id/storeListView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/siteTextView"
